@@ -2,11 +2,12 @@
 package Telas;
 
 import AcessoDB.Conexao;
+import AcessoDB.FilmeDAO;
 import AcessoDB.Filmes;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.sql.Date;
+
 import javax.swing.JOptionPane;
 
 public class Cadastro extends javax.swing.JFrame {
@@ -30,7 +31,7 @@ public class Cadastro extends javax.swing.JFrame {
         txtData = new javax.swing.JTextField();
         txtCategoria = new javax.swing.JTextField();
         ButtonCadastrar = new javax.swing.JButton();
-        ButtonLimpar = new javax.swing.JButton();
+        ButtonConsultar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,7 +67,7 @@ public class Cadastro extends javax.swing.JFrame {
         txtCategoria.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         ButtonCadastrar.setBackground(new java.awt.Color(255, 255, 255));
-        ButtonCadastrar.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        ButtonCadastrar.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
         ButtonCadastrar.setForeground(new java.awt.Color(0, 0, 0));
         ButtonCadastrar.setText("Cadastrar");
         ButtonCadastrar.addActionListener(new java.awt.event.ActionListener() {
@@ -75,13 +76,13 @@ public class Cadastro extends javax.swing.JFrame {
             }
         });
 
-        ButtonLimpar.setBackground(new java.awt.Color(255, 255, 255));
-        ButtonLimpar.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        ButtonLimpar.setForeground(new java.awt.Color(0, 0, 0));
-        ButtonLimpar.setText("Limpar");
-        ButtonLimpar.addActionListener(new java.awt.event.ActionListener() {
+        ButtonConsultar.setBackground(new java.awt.Color(255, 255, 255));
+        ButtonConsultar.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        ButtonConsultar.setForeground(new java.awt.Color(0, 0, 0));
+        ButtonConsultar.setText("Consultar");
+        ButtonConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ButtonLimparActionPerformed(evt);
+                ButtonConsultarActionPerformed(evt);
             }
         });
 
@@ -100,17 +101,20 @@ public class Cadastro extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ButtonCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(ButtonLimpar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(ButtonCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(123, 123, 123)
+                                .addComponent(ButtonConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(150, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -134,9 +138,9 @@ public class Cadastro extends javax.swing.JFrame {
                     .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(53, 53, 53)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ButtonCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ButtonLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(112, Short.MAX_VALUE))
+                    .addComponent(ButtonCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ButtonConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(121, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -159,40 +163,32 @@ public class Cadastro extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ButtonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonLimparActionPerformed
-        
-    }//GEN-LAST:event_ButtonLimparActionPerformed
+    private void ButtonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonConsultarActionPerformed
+         Consulta c = new Consulta();
+         c.setVisible(true);
+    }//GEN-LAST:event_ButtonConsultarActionPerformed
 
     private void ButtonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCadastrarActionPerformed
-        Filmes filme = new Filmes();
-        Conexao conexao = new Conexao();
-        boolean status;
-        int resposta = 0;
-        filme.setNome(txtNome.getText());
-        filme.setCategoria(txtCategoria.getText());
+        Filmes filmes = new Filmes();
+        FilmeDAO filmeDAO = new FilmeDAO();
+
         try{
-            String dataTexto = txtData.getText();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate dataConvertida = LocalDate.parse(dataTexto,formatter);
-            filme.setDatalancamento(Date.valueOf(dataConvertida));
-            JOptionPane.showMessageDialog(null, "Conexão realizada com sucesso! Dados cadastrados no banco");
-       }catch(Exception e){
-            System.out.println("Deu ruim amigo");
-        }     
-        conexao = new Conexao();
-        status = conexao.conectar();
-        if(status == false){
-            JOptionPane.showMessageDialog(null, "Erro de conexão");
-        }else{
-            conexao.cadastrar(filme);
-            if(resposta == 1){
-              JOptionPane.showMessageDialog(null,"Dados incluidos com sucesso!");
-              txtNome.setText("");
-              txtData.setText("");
-              txtCategoria.setText("");
-            }
+            String nome = txtNome.getText();
+            String categoria = txtCategoria.getText();
+            Date data = Date.valueOf(txtData.getText());
+            
+            filmes.setDatalancamento(data);
+            filmes.setNome(nome);
+            filmes.setCategoria(categoria);
+            filmeDAO.inserir(filmes);
+            JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
+        }catch(Exception ex){
+            System.out.println("Deu ruim o tratamento " + ex.getMessage());
         }
-        conexao.desconectar();
+        
+        txtNome.setText("");
+        txtCategoria.setText("");
+        txtData.setText("");
     }//GEN-LAST:event_ButtonCadastrarActionPerformed
 
     public static void main(String args[]) {
@@ -206,7 +202,7 @@ public class Cadastro extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonCadastrar;
-    private javax.swing.JButton ButtonLimpar;
+    private javax.swing.JButton ButtonConsultar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

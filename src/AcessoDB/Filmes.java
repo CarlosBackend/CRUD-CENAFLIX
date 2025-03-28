@@ -1,7 +1,8 @@
 package AcessoDB;
-import java.sql.Date;
+import java.sql.*;
 
 public class Filmes {
+    private int id;
     private String nome;
     private Date datalancamento;
     private String categoria;
@@ -10,6 +11,14 @@ public class Filmes {
         this.nome = nome;
         this.datalancamento = datalancamento;
         this.categoria = categoria;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
     public  Filmes(){}
@@ -37,4 +46,5 @@ public class Filmes {
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
+    
 }
